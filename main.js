@@ -96,7 +96,6 @@ ipcMain.on('compressed-files', (event, fileInfo) => {
         compressionPwd,
         compressionName
     } = fileInfo;
-    //const basename = path.basename(file, path.extname(file))
     const savePath = path.join(compressionOutputDirectory, `${compressionName}.${compressionType}`);
     const output = fs.createWriteStream(savePath);
 
@@ -119,13 +118,6 @@ ipcMain.on('compressed-files', (event, fileInfo) => {
                 password: compressionPwd
             });
     }
-
-    // listen for all archive data to be written
-    // 'close' event is fired only when a file descriptor is involved
-    output.on('close', function () {
-        console.log(archive.pointer() + ' total bytes');
-        console.log('archiver has been finalized and the output file descriptor has closed.');
-    });
 
     archive.on("progress", data => {
         const { processed } = data.entries;
