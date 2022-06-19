@@ -3,6 +3,7 @@ let fileInfo = {
     compressionLevel: 5,
     compressionOutputDirectory: '',
     compressionPwd: '',
+    compressionName: '',
     fileList: {}
 };
 
@@ -50,7 +51,9 @@ $('.file-menu').on('click', 'button', (e) => {
     let date = new Date();
     const offset = date.getTimezoneOffset();
     date = new Date(date.getTime() - (offset * 60 * 1000));
-    $('#compressionName').val(date.toISOString().split('T')[0]);
+    const defaultName = date.toISOString().split('T')[0];
+    fileInfo['compressionName'] = defaultName;
+    $('#compressionName').val(defaultName);
 });
 
 $('.password-wrapper').on('click', 'a', (e) => {
