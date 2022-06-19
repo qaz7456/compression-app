@@ -1,0 +1,277 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #8178d3;
+    color: #63686e;
+}
+
+.wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    background: #fff;
+}
+
+.title {
+    font: bold 18px "Quicksand", san-serif;
+    background: #f3f4f8;
+    padding: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.file_upload_list {
+    overflow: auto;
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.file_upload_list li .file_item {
+    display: flex;
+    border-bottom: 1px solid #f3f4f8;
+    padding: 15px 20px;
+}
+
+.file_item .format {
+    background: #8178d3;
+    border-radius: 10px;
+    width: 45px;
+    height: 40px;
+    line-height: 40px;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    margin-right: 15px;
+}
+
+.file_item .file_progress {
+    width: calc(100% - 60px);
+    font-size: 14px;
+}
+
+.file_item .file_info,
+.file_item .file_size_wrap {
+    display: flex;
+    align-items: center;
+}
+
+.file_item .file_info {
+    justify-content: space-between;
+}
+
+.file_item .file_progress .progress {
+    width: 100%;
+    height: 4px;
+    background: #efefef;
+    overflow: hidden;
+    border-radius: 5px;
+    margin-top: 8px;
+    position: relative;
+}
+
+.file_item .file_progress .progress .inner_progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #58e380;
+}
+
+.file_item .file_size_wrap .file_size {
+    margin-right: 15px;
+}
+
+.file_item .file_size_wrap .file_close {
+    border: 1px solid #8178d3;
+    color: #8178d3;
+    width: 20px;
+    height: 20px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.file_item .file_size_wrap .file_close:hover {
+    background: #cf0000;
+    color: #fff;
+}
+
+.file-menu {
+    display: flex;
+}
+
+.file-menu button {
+    padding: 8px 16px;
+    background: #009579;
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    cursor: pointer;
+    margin: 10px 10px 10px 0px;
+}
+.file-menu button:disabled {
+    background: #979797;
+}
+
+.file-menu button span {
+    font: bold 20px "Quicksand", san-serif;
+    color: #ffffff;
+    transition: all 0.2s;
+}
+
+.file-menu .file_option:hover {
+    background: #3f9c00;
+    color: #fff;
+}
+
+.choose_file {
+    flex: 8.5;
+}
+
+.choose_file label {
+    display: block;
+    border: 2px dashed #8178d3;
+    padding: 15px;
+    /* width: calc(100% - 20px); */
+    margin: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.choose_file #choose_file {
+    outline: none;
+    opacity: 0;
+    width: 0;
+}
+
+.choose_file span {
+    font-size: 14px;
+    color: #8178d3;
+}
+
+.choose_file label:hover span {
+    text-decoration: underline;
+}
+
+ol,
+ul {
+    padding-left: 0;
+}
+
+#compression_optin_modal input[type=file] {
+    width: 0;
+}
+
+#compression_optin_modal .form-group {
+    margin-top: 10px;
+}
+
+#compression_optin_modal form {
+    min-height: calc(90% - 63px);
+}
+
+.modal_footer {
+    width: 100%;
+    display: flex;
+    height: 63px;
+}
+
+.modal_footer button {
+    flex: 1;
+    padding: 8px 16px;
+    border: none;
+    outline: none;
+    border-radius: 2px;
+    cursor: pointer;
+    margin: 10px 10px 10px 0px;
+}
+
+.modal_footer button span {
+    font: bold 20px "Quicksand", san-serif;
+    color: #ffffff;
+    transition: all 0.2s;
+}
+
+.password-wrapper a {
+    cursor: pointer;
+}
+
+.display-none {
+    display: none;
+}
+
+.visibility-hidden {
+    visibility: hidden;
+}
+
+#compressionOutputDirectory span {
+    display: block;
+    width: 300px;
+    word-wrap: break-word;
+}
+
+.symbol {
+    font-size: 0.9em;
+    font-family: Times New Roman;
+    border-radius: 1em;
+    padding: .1em .6em .1em .6em;
+    font-weight: bolder;
+    color: white;
+    background-color: #4E5A56;
+}
+
+.icon-info {
+    background-color: #3229CF;
+}
+
+.icon-error {
+    background: #e64943;
+    font-family: Consolas;
+}
+
+.icon-tick {
+    background: #13c823;
+}
+
+.icon-excl {
+    background: #ffd54b;
+    color: black;
+}
+
+.icon-info:before {
+    content: 'i';
+}
+
+.icon-error:before {
+    content: 'x';
+}
+
+.icon-tick:before {
+    content: '\002713';
+}
+
+.icon-excl:before {
+    content: '!';
+}
+
+.loading {
+    position: absolute;
+    vertical-align: middle;
+    width: 100%;
+    height: 115%;
+    background-color: rgba(0, 0, 0, 0.1);
+}
