@@ -4,13 +4,25 @@ const archiver = require('archiver');
 const path = require("path");
 const pjson = require('./package.json');
 
-// 主視窗
+/**
+ * 主操作畫面視窗
+ */
 let mainWindow = null;
 
-// 建立應用程式視窗的 function
-function createWindow() {
+/**
+ * 工具函式: 非同步等待計時器
+ * @param {number} ms 延迟的毫秒数 (一秒等于 1000 毫秒)
+ */
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    // 過度視窗設定
+/**
+ * 初始化視窗(啟動/主操作畫面)
+ */
+function initializeMultipleWindows() {
+
+    /**
+     * 啟動畫面視窗
+     */
     const splashWindow = new BrowserWindow({
         width: 350,
         height: 360,
@@ -19,7 +31,7 @@ function createWindow() {
         frame: false
     });
 
-    // 主視窗設定
+    // 初始化主操作畫面視窗
     mainWindow = new BrowserWindow({
         autoHideMenuBar: true,
         title: `壓縮雞 v${pjson.version}`,
@@ -33,12 +45,17 @@ function createWindow() {
         }
     });
 
-    // 載入html
+    // 視窗載入相對應檔案
     splashWindow.loadFile('html/splash.html');
     mainWindow.loadFile('html/index.html');
 
+    // 當主操作畫面視窗準備好後，執行一次回調函式
     mainWindow.once('ready-to-show', async () => {
-        await sleep(3000);
+        /**
+         * 當主操作畫面視窗準備好後，即可銷毀啟動畫面視窗，並顯示畫面，
+         * 但為了避免主視窗準備過快，導致啟動畫面過快閃屏，先等待三秒再執行
+         */
+        await wait(3000);
         splashWindow.destroy();
         mainWindow.show();
 
@@ -48,14 +65,11 @@ function createWindow() {
     });
 }
 
-function sleep(ms) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    });
-}
-//初始化並準備好創建窗口
+// 當主程式準備好後，執行回調函式
 app.whenReady().then(() => {
-    createWindow();
+
+    // 初始化視窗(啟動/主操作畫面)
+    initializeMultipleWindows();
 
     // 運用程式運行時，點擊工具列圖示時觸發（macOS）
     app.on('activate', function () {
@@ -64,20 +78,23 @@ app.whenReady().then(() => {
          * 而 macOS 應用程序通常會在沒有打開任何窗口的情況下繼續運行，
          * 並且在沒有可用窗口時激活應用程序應該打開一個新窗口
          */
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
+        if (BrowserWindow.getAllWindows().length === 0) initializeMultipleWindows()
     });
 
-    // register format for archiver
-    // note: only do it once per Node.js process/application, as duplicate registration will throw an error
+    /**
+     * 註冊存檔器的格式
+     * 注意: 每個 Node.js 進程/應用程序只執行一次，因為重複註冊會引發錯誤
+     */
     archiver.registerFormat('zip-encrypted', require("archiver-zip-encrypted"));
 });
 
-//關閉所有視窗時觸發，除 macOS 以外
+// 關閉所有視窗時觸發，除 macOS 以外
 app.on('window-all-closed', function () {
-    //darwin 為 macOS 的作業系統
+    // darwin 為 macOS 的作業系統
     if (process.platform !== 'darwin') app.quit()
 });
 
+// 選擇檔案輸出目錄時觸發
 ipcMain.on('compressed-directory', (event) => {
     let directory = dialog.showOpenDialogSync({
         properties: ['openDirectory'],
@@ -86,8 +103,8 @@ ipcMain.on('compressed-directory', (event) => {
     event.reply('compressed-directory', directory);
 });
 
+// 執行壓縮檔案時觸發
 ipcMain.on('compressed-files', (event, fileInfo) => {
-    console.log('fileInfo', fileInfo);
     const {
         fileList,
         compressionType,
@@ -101,40 +118,45 @@ ipcMain.on('compressed-files', (event, fileInfo) => {
 
     let archive;
 
-    if (compressionType == 'tar.gz') {
-        archive = archiver(compressionType, {
-            gzip: true
-        });
-    } else if (compressionPwd == '') {
-        archive = archiver(compressionType, {
-            zlib: { level: parseInt(compressionLevel) }
-        });
-    } else {
-        archive = archiver.create(
-            'zip-encrypted',
-            {
+    // 視壓縮格式決定初始化方式
+    switch (compressionType) {
+        case '':
+            archive = archiver(compressionType, {
+                zlib: { level: parseInt(compressionLevel) }
+            });
+            break;
+        case 'tar.gz':
+            archive = archiver(compressionType, {
+                gzip: true
+            });
+            break;
+        default:
+            archive = archiver.create('zip-encrypted', {
                 zlib: { level: parseInt(compressionLevel) },
                 encryptionMethod: 'aes256',
                 password: compressionPwd
             });
     }
 
-    archive.on("progress", data => {
+    // 初始化後建立管道連接
+    archive.pipe(output);
+
+    // 監聽處理進度，並傳回前端
+    archive.on('progress', data => {
         const { processed } = data.entries;
         mainWindow.webContents.send('asyn-processed', processed);
     });
 
-    // pipe archive data to the file
-    archive.pipe(output);
-
-    // append a file from stream
+    // 遍歷檔案清單，將其轉為可寫流，且指定為壓縮檔案
     const files = Object.values(fileList);
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
         archive.append(fs.createReadStream(file), { name: path.basename(file) });
     }
 
-    // finalize the archive (ie we are done appending files but streams have to finish yet)
-    // 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
+    /**
+     * 完成壓縮(即使完成了附加文件，但流必須完成)
+     * 注意: 'close'、'end' 或 'finish'等事件，可能會在調用此方法後立即觸發，因此請事先註冊它們
+     */
     archive.finalize();
 });
