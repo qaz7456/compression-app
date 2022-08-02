@@ -4,7 +4,7 @@
 </div>
 
 ## Introduce
-> Developed based on [Electron][2] framework
+> Developed based on [Electron][2] framework.
 
 compression-app is a cross-platform compression tool.
 
@@ -16,6 +16,8 @@ npm install && npm start
 ```
 
 ## Package and build
+> Packaging based on [electron-builder][3].
+
 |  command  |  Purpose  |
 |    ---    |   ---     |
 |  npm run pack | Packaged into executable  |
@@ -28,3 +30,4 @@ npm install && npm start
 
 [1]: https://github.com/qaz7456/compression-app/blob/main/front-end/images/sleep.gif
 [2]: https://www.electronjs.org/docs/latest/
+[3]: https://www.electron.build/
