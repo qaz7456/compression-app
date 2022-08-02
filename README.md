@@ -1,5 +1,4 @@
 <div align='center'>
-  
   <img src='https://github.com/qaz7456/compression-app/blob/main/front-end/images/sleep.gif' width='100' />
 </div>
 
