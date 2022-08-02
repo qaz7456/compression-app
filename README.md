@@ -22,5 +22,9 @@ npm install && npm start
 |  npm run dist  |  Packaged into executable and installation files |
 |  npm run dist-all |  Packaged into executable and installation files(macOS, Windows) |
 
+
+## How to use
+[](https://user-images.githubusercontent.com/25022140/182281916-a472cf4e-9dab-4b49-932b-499d2658ce88.webm)
+
 [1]: https://github.com/qaz7456/compression-app/blob/main/front-end/images/sleep.gif
 [2]: https://www.electronjs.org/docs/latest/
