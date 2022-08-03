@@ -3,15 +3,35 @@
 </div>
 
 ## Introduce
-> Developed based on [Electron][2] framework.
+> Developed based on [*Electron*][2] framework.
 
-compression-app is a cross-platform compression tool.
+*compression-app* is a cross-platform compression tool.
 
-Inspired by a friend who complained to me about why encrypting compressed files on macOS is such a hassle.
+Inspired by a friend who complained to me about why encrypting compressed files on *macOS* is such a hassle.
 
 ## Quick start
 ```bash
 npm install && npm start
+```
+## Developers
+- If you want to run the latest code from git, here's how to get started.
+```bash
+# clone the repository
+git clone https://github.com/qaz7456/compression-app.git
+
+# change the working directory to compression-app
+cd compression-app
+
+# install the compression-app dependencies
+npm install
+
+# execute development mode
+npm start
+```
+- If you want to open the front-end *DevTools*, uncomment the following [code][4].
+```javascript
+// splashWindow.webContents.openDevTools();
+// mainWindow.webContents.openDevTools();
 ```
 
 ## Package and build
@@ -30,3 +50,4 @@ npm install && npm start
 [1]: https://github.com/qaz7456/compression-app/blob/main/front-end/images/sleep.gif
 [2]: https://www.electronjs.org/docs/latest/
 [3]: https://www.electron.build/
+[4]: https://github.com/qaz7456/compression-app/blob/e69852a2bbf8a71fc2a6c292bb81dfdfb9c9b832/main.js#L62-L64
