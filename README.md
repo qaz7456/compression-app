@@ -35,7 +35,7 @@ npm start
 ```
 
 ## Package and build
-> Packaging based on [electron-builder][3].
+> Packaging based on [*electron-builder*][3].
 
 |  command  |  Purpose  |
 |    ---    |   ---     |
