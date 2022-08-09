@@ -24,8 +24,8 @@ function initializeMultipleWindows() {
      * 啟動畫面視窗
      */
     const splashWindow = new BrowserWindow({
-        width: 350,
-        height: 360,
+        width: 370,
+        height: 400,
         transparent: true,
         autoHideMenuBar: true,
         frame: false
