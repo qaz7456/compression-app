@@ -24,11 +24,9 @@ npm install
 # execute development mode
 npm start
 ```
-- If you want to open the front-end *DevTools*, uncomment the following [code][4].
-```javascript
-// splashWindow.webContents.openDevTools();
-// mainWindow.webContents.openDevTools();
-```
+- If you want to open the front-end *DevTools*, uncomment the following code.
+  - [DevTools for splash Window][4]
+  - [DevTools for main Window][5]
 
 ## Package and build
 > Packaging based on [*electron-builder*][3].
@@ -46,4 +44,5 @@ npm start
 [1]: https://github.com/qaz7456/compression-app/blob/main/front-end/images/sleep.gif
 [2]: https://www.electronjs.org/docs/latest/
 [3]: https://www.electron.build/
-[4]: https://github.com/qaz7456/compression-app/blob/e69852a2bbf8a71fc2a6c292bb81dfdfb9c9b832/main.js#L62-L64
+[4]: https://github.com/qaz7456/compression-app/blob/main/main.js#L41
+[5]: https://github.com/qaz7456/compression-app/blob/main/main.js#L84
