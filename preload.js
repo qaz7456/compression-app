@@ -8,13 +8,15 @@ const ipc = {
         // From render to main.
         'send': [
             'compressed-directory',
-            'compressed-files' // Channel name
+            'compressed-files',
+            'env-info'
         ],
         // From main to render.
         'receive': [
             'compressed-directory',
             'compressed-files',
-            'asyn-processed'
+            'asyn-processed',
+            'switch-language'
         ],
         // From render to main and back again.
         'sendReceive': []

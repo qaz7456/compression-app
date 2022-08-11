@@ -152,6 +152,47 @@ $('#compression_optin_modal').on($.modal.BEFORE_CLOSE, function (event, modal) {
     };
 });
 
+window.ipcRender.receive('switch-language', (envInfo) => {
+    const {isZh, isCht} = envInfo;
+    const option = isZh ? isCht ? 'zh-CHT' : 'zh-CHS' : 'en-US';
+    const i18nMsg = i18n[option];
+
+    $('.title').html(i18nMsg['title']);
+
+    const $menu = $('#choose_file').closest('.file-menu');
+    $menu.find('.choose_file span').html(i18nMsg['choose-file-remind']);
+    $menu.find('button span').html(i18nMsg['choose-file-btn']);
+
+    const $modal = $('#compression_optin_modal');
+
+    const $group1 = $modal.find('.form-group:nth-child(1)');
+    $group1.find('label').html(i18nMsg['compression-name']);
+    $group1.find('input').attr('placeholder', i18nMsg['compression-name-placeholder']);
+    
+    const $group2 = $modal.find('.form-group:nth-child(2)');
+    $group2.find('label').html(i18nMsg['compression-type']);
+
+    const $group3 = $modal.find('.form-group:nth-child(3)');
+    $group3.find('label').html(i18nMsg['compression-level']);
+    $group3.find('select option').each(function(index){
+        $(this).text(i18nMsg['compression-level-option'][index]);    
+    });
+
+    const $group4 = $modal.find('.form-group:nth-child(4)');
+    $group4.find('label:nth-child(1)').html(i18nMsg['compression-output-directory']);
+    $group4.find('span').html(i18nMsg['compression-output-remind']);
+
+    const $group5 = $modal.find('.form-group:nth-child(5)');
+    $group5.find('label').html(i18nMsg['require-pwd-label']);
+
+    const $group6 = $modal.find('.form-group:nth-child(6)');
+    $group6.find('label').html(i18nMsg['require-pwd-remind']);
+
+    const $footer = $modal.find('.modal_footer');
+    $footer.find('.btn:nth-child(1) span').html(i18nMsg['cancel-btn']);
+    $footer.find('.btn:nth-child(2) span').html(i18nMsg['compression-btn']);
+});
+
 window.ipcRender.receive('compressed-directory', (directory) => {
     $('#compressionOutputDirectory span').html(directory);
     if ('請選擇壓縮檔存檔資料夾' == directory) {

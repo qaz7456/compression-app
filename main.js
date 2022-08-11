@@ -5,9 +5,9 @@ const path = require("path");
 const pjson = require('./package.json');
 
 /**
- * 主操作畫面視窗
+ * 啟動/主操作畫面視窗
  */
-let mainWindow = null;
+let splashWindow = null, mainWindow = null;
 
 /**
  * 工具函式: 非同步等待計時器
@@ -16,25 +16,43 @@ let mainWindow = null;
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 /**
- * 初始化視窗(啟動/主操作畫面)
+ * 初始化視窗(啟動畫面)
  */
-function initializeMultipleWindows() {
+function initializeSplashWindow() {
 
     /**
      * 啟動畫面視窗
      */
-    const splashWindow = new BrowserWindow({
+    splashWindow = new BrowserWindow({
         width: 370,
         height: 400,
         transparent: true,
         autoHideMenuBar: true,
-        frame: false
+        frame: false,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js')
+        }
     });
+
+    // 視窗載入相對應檔案
+    splashWindow.loadFile('html/splash.html');
+
+    // 打開開發者模式
+    // splashWindow.webContents.openDevTools();
+}
+
+/**
+ * 初始化視窗(主操作畫面)
+ */
+ function initializeMainWindow(envInfo) {
+    
+    let {name, version} = pjson;
+    name = envInfo.isZh ? envInfo.isCht ? '壓縮雞' : '压缩鸡' : name;
 
     // 初始化主操作畫面視窗
     mainWindow = new BrowserWindow({
         autoHideMenuBar: true,
-        title: `壓縮雞 v${pjson.version}`,
+        title: `${name} v${version}`,
         width: 550,
         height: 600,
         resizable: false,
@@ -46,21 +64,23 @@ function initializeMultipleWindows() {
     });
 
     // 視窗載入相對應檔案
-    splashWindow.loadFile('html/splash.html');
     mainWindow.loadFile('html/index.html');
 
     // 當主操作畫面視窗準備好後，執行一次回調函式
-    mainWindow.once('ready-to-show', async () => {
+    mainWindow.once('ready-to-show', async (event) => {
         /**
          * 當主操作畫面視窗準備好後，即可銷毀啟動畫面視窗，並顯示畫面，
          * 但為了避免主視窗準備過快，導致啟動畫面過快閃屏，先等待三秒再執行
          */
         await wait(3000);
+
         splashWindow.destroy();
         mainWindow.show();
 
+        // 切換主畫面語言
+        mainWindow.webContents.send('switch-language', envInfo);
+
         // 打開開發者模式
-        // splashWindow.webContents.openDevTools();
         // mainWindow.webContents.openDevTools();
     });
 }
@@ -68,8 +88,8 @@ function initializeMultipleWindows() {
 // 當主程式準備好後，執行回調函式
 app.whenReady().then(() => {
 
-    // 初始化視窗(啟動/主操作畫面)
-    initializeMultipleWindows();
+    // 初始化視窗(啟動畫面)
+    initializeSplashWindow();
 
     // 運用程式運行時，點擊工具列圖示時觸發（macOS）
     app.on('activate', function () {
@@ -78,20 +98,25 @@ app.whenReady().then(() => {
          * 而 macOS 應用程序通常會在沒有打開任何窗口的情況下繼續運行，
          * 並且在沒有可用窗口時激活應用程序應該打開一個新窗口
          */
-        if (BrowserWindow.getAllWindows().length === 0) initializeMultipleWindows()
+        if (BrowserWindow.getAllWindows().length === 0) initializeSplashWindow()
     });
 
     /**
      * 註冊存檔器的格式
      * 注意: 每個 Node.js 進程/應用程序只執行一次，因為重複註冊會引發錯誤
      */
-    archiver.registerFormat('zip-encrypted', require("archiver-zip-encrypted"));
+    archiver.registerFormat('zip-encrypted', require('archiver-zip-encrypted'));
 });
 
 // 關閉所有視窗時觸發，除 macOS 以外
 app.on('window-all-closed', function () {
     // darwin 為 macOS 的作業系統
     if (process.platform !== 'darwin') app.quit()
+});
+
+// 啟動畫面啟動時觸發
+ipcMain.on('env-info', (event, envInfo) => {
+    initializeMainWindow(envInfo);
 });
 
 // 選擇檔案輸出目錄時觸發
