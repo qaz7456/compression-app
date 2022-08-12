@@ -54,7 +54,7 @@ function initializeSplashWindow() {
         autoHideMenuBar: true,
         title: `${name} v${version}`,
         width: 550,
-        height: 600,
+        height: 620,
         resizable: false,
         show: false,
         icon: path.join(__dirname, 'build', 'icons', '32x32.png'),

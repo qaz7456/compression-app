@@ -104,7 +104,7 @@ $('#compressionLevel, #compressionType, #compressionPwd, #compressionName').on('
         $('#compressionLevel, #compressionPwd').val('');
         $('#isRequirePwd').prop('checked', false);
         $('#compressionLevel, #isRequirePwd').prop('disabled', true);
-        $('.password-wrapper').addClass('display-none');
+        $('.password-wrapper').addClass('visibility-hidden');
         fileInfo = {
             ...fileInfo,
             compressionLevel: '',
@@ -119,7 +119,7 @@ $('#compressionLevel, #compressionType, #compressionPwd, #compressionName').on('
 });
 
 $('#isRequirePwd').on('change', function () {
-    $('.password-wrapper').toggleClass('display-none');
+    $('.password-wrapper').toggleClass('visibility-hidden');
     if (!this.checked) {
         const $pwd = $('#compressionPwd');
         const $group = $pwd.closest('.input-group');
@@ -140,7 +140,7 @@ $('#compressionOutputDirectory').on('click', function () {
 
 $('#compression_optin_modal').on($.modal.BEFORE_CLOSE, function (event, modal) {
     $(event.target).find('form').trigger("reset");
-    $('.password-wrapper').addClass('display-none');
+    $('.password-wrapper').addClass('visibility-hidden');
     $('.modal .notify-yellow').addClass('visibility-hidden');
     $('#compressionOutputDirectory span').html('請選擇壓縮檔存檔資料夾');
     fileInfo = {
