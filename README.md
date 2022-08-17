@@ -38,7 +38,7 @@ npm start
 |  npm run dist-all |  Packaged into executable and installation files(macOS, Windows) |
 
 
-## 🎊 How to use
+## 🕹️ How to use
 [](https://user-images.githubusercontent.com/25022140/182281916-a472cf4e-9dab-4b49-932b-499d2658ce88.webm)
 
 ## 📄 License
