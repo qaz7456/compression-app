@@ -2,6 +2,13 @@
   <img src='https://github.com/qaz7456/compression-app/blob/main/front-end/images/sleep.gif' width='100' />
 </div>
 
+<div align='center'>
+  <b><a href='README.md' title='Read this page in English'>English</a></b>┃
+  <b><a href='./i18n/README.zh-CHS.md' title='用中文阅读此页面'>简体中文</a></b>┃
+  <b><a href='./i18n/README.zh-CHT.md' title='用中文閱讀此頁面'>繁體中文</a></b>┃
+  <b><a href='./i18n/README.ja-JP.md' title='このページを日本語で読む'>日本語</a></b>
+</div>
+
 ## 📚 Introduce
 > Developed based on [*Electron*][2] framework.
 
